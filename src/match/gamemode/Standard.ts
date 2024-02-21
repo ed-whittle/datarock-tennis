@@ -30,6 +30,26 @@ class Standard implements GameMode {
   };
 
   /**
+   * Checks if the set is finished after the game score has been incremented
+   * Early return if no players score is higher than 6
+   * Otherwise check that the score difference is 2 (or higher in case of arithmetic error)
+   *
+   * @returns Boolean  - true if the set is finished, false if not
+   */
+  public isSetFinished = (): boolean => {
+    const currentGame = this.players.map((player) => player.getSetScore());
+    if (!currentGame.some((score) => score >= 6)) {
+      return false;
+    } else {
+      const scoreDiff = Math.abs(currentGame[0] - currentGame[1]);
+      if (scoreDiff >= 2) {
+        return true;
+      }
+      return false;
+    }
+  };
+
+  /**
    * Increments the winner of the points score, and if the point winner was 40-ADV down it will
    * reset the value to DEUCE
    *

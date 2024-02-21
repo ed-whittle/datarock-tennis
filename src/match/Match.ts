@@ -1,7 +1,6 @@
-import Constants from "../constants/constants";
 import Player from "./Player";
-import Standard from "./gamemode/standard";
-import Tiebreak from "./gamemode/tiebreak";
+import Standard from "./gamemode/Standard";
+import Tiebreak from "./gamemode/Tiebreak";
 
 class Match {
   private players: Player[] = [];
@@ -13,31 +12,49 @@ class Match {
   }
 
   public pointWonBy = (playerName: string) => {
-    const GameMode = this.isTiebreak ? Tiebreak : Standard
+    const GameMode = this.isTiebreak ? Tiebreak : Standard;
     const gameMode = new GameMode(this.players);
     const pointWinner = this.players.find(
       (player) => player.getName() == playerName
     );
+    // If there was no assumption that the input data was valid, this would be needed
     if (!pointWinner) {
       throw Error("Invalid Player Name");
     }
+
     gameMode.handlePointWin(pointWinner);
-    const gameFinished = gameMode.isGameFinished();
-    if (gameFinished) {
+    if (gameMode.isGameFinished()) {
       this.handleGameWin(pointWinner);
+      if (gameMode.isSetFinished()) {
+        this.handleEndOfSet(pointWinner);
+        return;
+      }
       this.checkIsTiebreak();
-      console.log(this.formatSetScore());
-    } else {
-      console.log(gameMode.formatGameScore());
     }
   };
 
+  /**
+   * Prints the current game score to the stdout
+   */
+  public score = (): void => {
+    const GameMode = this.isTiebreak ? Tiebreak : Standard;
+    const gameMode = new GameMode(this.players);
+    console.log(gameMode.formatGameScore());
+  };
+
+  /**
+   * Prints the current set score to the stdout
+   */
+  public tennisSetScore = (): void => {
+    console.log(this.formatSetScore());
+  };
+
   private checkIsTiebreak = () => {
-    if (this.players.every(player => player.getGameScore() === 6)) {
-      console.log(`Tiebreaker!`)
+    if (this.players.every((player) => player.getSetScore() === 6)) {
+      console.log(`Tiebreaker!`);
       this.isTiebreak = true;
     }
-  }
+  };
 
   /**
    * When a player wins a game, their set score is incremented by 1 and the game scores are set back to zero
@@ -58,6 +75,17 @@ class Match {
   private formatSetScore = () => {
     const currentGame = this.players.map((player) => player.getSetScore());
     return currentGame.slice(0).join("-");
+  };
+
+  /**
+   * When it's the end of the set, print the winner and reset the set count.
+   *
+   * @param pointWinner
+   */
+  private handleEndOfSet = (pointWinner: Player) => {
+    console.log(`Set ${pointWinner.getName()}!`);
+    this.players.map((player) => player.setSetScore(0));
+    // TODO Would increment the match count here
   };
 }
 

@@ -19,9 +19,23 @@ class Tiebreak implements GameMode {
     const currentGame = this.players.map((player) => player.getGameScore());
     if (!currentGame.some((score) => score >= 7)) {
       return false;
-    } 
+    }
     const scoreDiff = Math.abs(currentGame[0] - currentGame[1]);
     if (scoreDiff >= 2) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * Checks if the set is finished after the game score has been incremented
+   * Once score must be 7 or above if it's a tiebreaker
+   *
+   * @returns Boolean  - true if the set is finished, false if not
+   */
+  public isSetFinished = (): boolean => {
+    const currentGame = this.players.map((player) => player.getSetScore());
+    if (currentGame.some((score) => score >= 7)) {
       return true;
     }
     return false;
