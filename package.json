@@ -1,0 +1,27 @@
+{
+  "name": "datarocktennis",
+  "version": "1.0.0",
+  "description": "Tennis scorer for datarock code challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ed-whittle/datarock-tennis.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ed-whittle/datarock-tennis/issues"
+  },
+  "homepage": "https://github.com/ed-whittle/datarock-tennis#readme",
+  "dependencies": {
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "typescript": "^5.3.3"
+  }
+}
