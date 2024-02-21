@@ -7,11 +7,11 @@ class Player {
     this.name = playerName;
   }
 
-  public getName = () => {
+  public getName = (): string => {
     return this.name;
   };
 
-  public getGameScore = () => {
+  public getGameScore = () :number => {
     return this.gameScore;
   };
 
@@ -19,7 +19,7 @@ class Player {
     this.gameScore = score;
   };
 
-  public getSetScore = () => {
+  public getSetScore = (): number => {
     return this.setScore;
   };
 

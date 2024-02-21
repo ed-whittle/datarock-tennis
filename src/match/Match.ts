@@ -11,10 +11,20 @@ class Match {
     this.players.push(new Player(playerTwoName));
   }
 
-  public pointWonBy = (playerName: string) => {
+  /**
+   * When a player wins a point, this increments their game score
+   * Then it performs the following checl
+   * * Is the game is over and if so a point is added to the point winners set score
+   * * Is the set over and handles it if required
+   * * Is the score 6-6 and if it's a tiebreaker. If so then the mode of the scoring changes from Standard to Tiebreak
+   *
+   * @param playerName - Name of the player who won the point
+   * @returns
+   */
+  public pointWonBy = (playerName: string): void => {
     const GameMode = this.isTiebreak ? Tiebreak : Standard;
     const gameMode = new GameMode(this.players);
-    const pointWinner = this.players.find(
+    const pointWinner: Player | undefined = this.players.find(
       (player) => player.getName() == playerName
     );
     // If there was no assumption that the input data was valid, this would be needed
@@ -34,22 +44,18 @@ class Match {
   };
 
   /**
-   * Prints the current game score to the stdout
+   * Prints the current score to the stdout
    */
   public score = (): void => {
     const GameMode = this.isTiebreak ? Tiebreak : Standard;
     const gameMode = new GameMode(this.players);
-    console.log(gameMode.formatGameScore());
+    console.log(`${this.formatSetScore()} ${gameMode.formatGameScore()}`);
   };
 
   /**
-   * Prints the current set score to the stdout
+   * Checks if it the set has become a tiebreaker situation. Used to update the game mode for scoring
    */
-  public tennisSetScore = (): void => {
-    console.log(this.formatSetScore());
-  };
-
-  private checkIsTiebreak = () => {
+  private checkIsTiebreak = (): void => {
     if (this.players.every((player) => player.getSetScore() === 6)) {
       console.log(`Tiebreaker!`);
       this.isTiebreak = true;

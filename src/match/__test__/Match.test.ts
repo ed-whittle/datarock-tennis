@@ -90,12 +90,4 @@ describe("Match", () => {
       expect(Standard.prototype.formatGameScore).toHaveBeenCalled();
     });
   });
-  describe("tennisSetScore", () => {
-    console.log = jest.fn();
-    const match = new Match("Test1", "Test2");
-    Standard.prototype.formatGameScore = jest.fn();
-
-    match.tennisSetScore();
-    expect(console.log).toHaveBeenCalledWith("0-0");
-  });
 });
